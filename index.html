@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Flower Wand — Interactive Hand-Tracked Garden</title>
+    <meta
+      name="description"
+      content="Draw botanical flower gardens in mid-air using hand tracking gestures and physics scattering."
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <!-- Hidden/Mirrored Webcam Video Feed -->
+      <video id="webcam-video" playsinline muted></video>
+
+      <!-- Main Canvas for Flower Drawing & Physics -->
+      <canvas id="garden-canvas"></canvas>
+
+      <!-- Overlay Canvas for Hand Skeleton Debugging -->
+      <canvas id="skeleton-canvas"></canvas>
+
+      <!-- Top Glass HUD Header -->
+      <header class="hud-header">
+        <div class="brand">
+          <span class="brand-icon">🌸</span>
+          <span class="brand-title">Flower Wand</span>
+        </div>
+
+        <div class="controls-group">
+          <!-- Flower Species Picker -->
+          <div class="control-item">
+            <select id="flower-select" class="glass-select" aria-label="Select Flower Type">
+              <option value="random">✨ All Flowers (Random)</option>
+              <option value="daisy">🌼 Daisy</option>
+              <option value="sunflower">🌻 Sunflower</option>
+              <option value="rose">🌹 Wild Rose</option>
+              <option value="clover">🍀 4-Leaf Clover</option>
+              <option value="lavender">🪻 Lavender</option>
+              <option value="cherry_blossom">🌸 Cherry Blossom</option>
+            </select>
+          </div>
+
+          <!-- Skeleton Debug Toggle Button -->
+          <button id="btn-skeleton" class="glass-btn active" title="Toggle Hand Skeleton">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v5" />
+              <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6" />
+              <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
+              <path d="M18 8a2 2 0 0 1 2 2v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+            </svg>
+            <span>Skeleton</span>
+          </button>
+
+          <!-- Camera Toggle -->
+          <button id="btn-camera" class="glass-btn" title="Toggle Webcam">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+            </svg>
+            <span>Camera</span>
+          </button>
+
+          <!-- Snapshot Download -->
+          <button id="btn-snapshot" class="glass-btn" title="Save Snapshot">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Save</span>
+          </button>
+
+          <!-- Clear Canvas -->
+          <button id="btn-clear" class="glass-btn danger" title="Clear Garden">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            <span>Clear</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Bottom Floating Status Badge -->
+      <div id="status-badge" class="floating-badge">
+        <span id="status-dot" class="status-dot loading"></span>
+        <span id="status-text">Loading hand tracking model...</span>
+      </div>
+
+      <!-- Fallback Notice overlay for Mouse/Touch usage -->
+      <div id="fallback-notice" class="fallback-banner">
+        <span>💡 <strong>Mouse / Touch Enabled:</strong> Click & drag to plant flowers, double-click or press Space to scatter.</span>
+      </div>
+    </div>
+
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>
